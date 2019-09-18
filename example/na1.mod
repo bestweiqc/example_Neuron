@@ -7,7 +7,7 @@ NEURON {
 	SUFFIX na1
 	USEION na READ ena WRITE ina
 	:RANGE  , i :, ar2
-	RANGE gbar, gna, i, minf, hinf, mtau, htau,mhalf,hhalf, mk,hk,flag : , qinf, thinf
+	RANGE gbar, gna, i, minf, hinf, mtau, htau,mhalf,hhalf, mk,hk,flag,multiply1,multiply2 : , qinf, thinf
 }
 
 PARAMETER {
@@ -43,6 +43,9 @@ PARAMETER {
     	mk = 7.2
     	hk = 4
 	flag = 0
+
+	multiply1 = 1
+	multiply2 = 1
 }
 
 
@@ -93,7 +96,7 @@ PROCEDURE trates(vm,a2) {
 		:tha1 = tha 
 	a = trap0(vm,mhalf,Ra,qa)
 	b = trap0(-vm,-mhalf,Rb,qa)
-	mtau = 1/(a+b)/qt
+	mtau = (1/(a+b)/qt)*multiply1
         if (mtau<mmin) {mtau=mmin}
 	if (flag == 0){
 	if (v < -60 ) {
@@ -109,7 +112,7 @@ PROCEDURE trates(vm,a2) {
 	}
 	a = trap0(vm,hhalf,Rd,qd)
 	b = trap0(-vm,-hhalf,Rg,qg)
-	htau =  1/(a+b)/qt
+	htau =  (1/(a+b)/qt)*multiply2
         if (htau<hmin) {htau=hmin}
 }
 

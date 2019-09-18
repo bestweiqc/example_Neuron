@@ -23,6 +23,7 @@ PARAMETER {
 	qt=1
     	kn = 11
 	flag = 0
+	multiply = 1
 	: cut_off = vhalfn-3*kn
 }
 
@@ -31,7 +32,7 @@ NEURON {
 	SUFFIX k1
 	USEION k READ ek WRITE ik
         RANGE gkdr, i, gbar
-	RANGE ninf,taun,vhalfn,kn,flag
+	RANGE ninf,taun,vhalfn,kn,flag,multiply
 }
 
 STATE {
@@ -85,7 +86,7 @@ PROCEDURE rates(v (mV)) { :callable from hoc
 		else{ninf = 1 / ( 1 + exp( ( vhalfn - v ) / kn) )}
 	}else{ninf = 1 / ( 1 + exp( ( vhalfn - v ) / kn) )}
 		
-		taun = betn(v,vhalfn)/(qt*(0.02)*(1+a))
+		taun = (betn(v,vhalfn)/(qt*(0.02)*(1+a)))*multiply
 		:taun = 1/(betn(v,vhalfn)+a)
 
 	if (taun<nmax) {taun=nmax}
